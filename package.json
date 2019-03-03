@@ -1,0 +1,56 @@
+{
+    "name": "node-red-contrib-fake-wemo",
+    "version": "0.1.0",
+    "main": "index.js",
+    "keywords": [
+        "node-red",
+        "wemo",
+        "emulator",
+        "fake",
+        "amazon",
+        "echo",
+        "alexa"
+    ],
+    "dependencies": {
+        "events": "^3.0.0",
+        "lodash": "^4.17.10",
+        "mewo": "^1.2.0",
+        "network": "^0.4.1",
+        "network-interfaces": "^1.1.0",
+        "util": "^0.11.1"
+    },
+    "author": "@tomjmul",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tomjmul/node-red-contrib-fake-wemo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/tomjmul/node-red-contrib-fake-wemo/issues"
+    },
+    "node-red": {
+        "nodes": {
+            "fake-wemo": "index.js"
+        }
+    },
+    "devDependencies": {
+        "eslint": "^5.0.0",
+        "eslint-config-prettier": "^2.9.0",
+        "prettier": "^1.13.6"
+    },
+    "eslintConfig": {
+        "env": {
+            "es6": true,
+            "node": true,
+            "mocha": true
+        },
+        "extends": [
+            "prettier"
+        ]
+    },
+    "prettier": {
+        "singleQuote": true,
+        "tabWidth": 4,
+        "printWidth": 96
+    }
+}

@@ -1,0 +1,191 @@
+<script type="text/javascript">
+    RED.nodes.registerType('fake-wemo', {
+        category: 'input',
+        color: '#70b44b',
+        defaults: {
+            initialState: {
+                value: false,
+                validate: RED.validators.typedInput('initialStateType')
+            },
+            initialStateType: {
+                value: 'bool', required: true
+            },
+            name: {
+                value: ''
+            },
+            friendlyName: {
+                value: '', required: true
+            },
+            interface: {
+                value: '', required: true
+            },
+            port: {
+                value: '', required: true
+            },
+            onTopic: {
+                value: ''
+            },
+            onPayload: {
+                value: ''
+            },
+            offTopic: {
+                value: ''
+            },
+            offPayload: {
+                value: ''
+            }
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: 'wemo.png',
+        label: function() {
+            return this.name || 'fake-wemo';
+        },
+        paletteLabel: 'fake wemo',
+        align: 'left',
+        oneditprepare: function() {
+            $('#node-input-initialState').typedInput({
+                default: 'bool',
+                typeField: $('#node-input-initialStateType'),
+                types: ['flow', 'global', 'bool']
+            });
+            $.getJSON('fake-wemo/' + this.id, function(data) {
+                var $dropdown = $('#node-input-interface');
+                if (data.length === 0) {
+                    data.push({ value: '', text: 'No active interfaces found' });
+                    $dropdown.prop('disabled', 'disabled');
+                }
+                $.each(data, function() {
+                    $dropdown.append(
+                        $('<option />')
+                            .val(this.value)
+                            .text(this.text)
+                    );
+                });
+            });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="fake-wemo">
+
+    <div class="form-row">
+        <label for="node-input-name">
+            <i class="icon-tag"></i>Node Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <hr>
+    <div class="form-row">
+        <label for="node-input-initialState">
+            <i class="icon-tag"></i>Initial State *</label>
+        <input type="hidden" id="node-input-initialStateType">
+        <input style="width: 70%" type="text" id="node-input-initialState">
+    </div>
+    <div class="form-row">
+        <label for="node-input-friendlyName">
+            <i class="icon-tag"></i>Friendly Name *</label>
+        <input type="text" id="node-input-friendlyName" placeholder="Friendly Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-interface"><i class="fa fa-globe"></i> Bind *</label>
+        <select id="node-input-interface" placeholder="Interface"/>
+        <span>Port *</span> <input type="text" id="node-input-port" style="width:65px">
+    </div>
+    <hr>
+    <div class="form-row">
+        <label for="node-input-onTopic">
+            <i class="icon-tag"></i>On Topic</label>
+        <input type="text" id="node-input-onTopic" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-onPayload">
+            <i class="icon-tag"></i>On Payload</label>
+        <input type="text" id="node-input-onPayload" placeholder="">
+    </div>
+
+    <hr>
+    <div class="form-row">
+        <label for="node-input-offTopic">
+            <i class="icon-tag"></i>Off Topic</label>
+        <input type="text" id="node-input-offTopic" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-offPayload">
+            <i class="icon-tag"></i>Off Payload</label>
+        <input type="text" id="node-input-offPayload" placeholder="">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="fake-wemo">
+    <h1>Fake Wemo</h1>
+
+    <p>
+        Drag the node on to your workspace, configure it as below and ask Alexa to discover devices. You can do this by
+        voice or in the Alexa app.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Config</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <code>Node Name</code>
+                </td>
+                <td>This is the name of the node as it appears in the Node-RED workspace</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Initial State</code>
+                </td>
+                <td>The on/off state reported to Alexa when this node is reloaded</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Friendly Name</code>
+                </td>
+                <td>This is the name you will use in voice commands to turn your node on or off</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Bind</code>
+                </td>
+                <td>The interface and port to bind an internal http server to, that allows Alexa to send commands to your node</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>On Topic</code>
+                </td>
+                <td>This is the topic sent when you ask Alexa to turn your node on</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>On Payload</code>
+                </td>
+                <td>This is the payload sent when you ask Alexa to turn your node on</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Off Topic</code>
+                </td>
+                <td>This is the topic sent when you ask Alexa to turn your node off</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Off Payload</code>
+                </td>
+                <td>This is the payload sent when you ask Alexa to turn your node off</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Troubleshooting</h2>
+    <p>
+        If Alexa can't discover the devices faked by this node, please check you don't have a firewall blocking the port
+        you've selected above and also port 1900/udp
+    </p>
+</script>
